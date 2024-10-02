@@ -6,7 +6,7 @@ $signin_url = ROOT_PATH . "login.php"
 $signout_url = ROOT_PATH . "logout.php?auth=".$ost->getLinkToken();
 
 header("Content-Type: text/html; charset=UTF-8");
-header("Content-Security-Policy: frame-ancestors ".$cfg->getAllowIframes()."; script-src 'self' 'unsafe-inline'; object-src 'none'");
+// header("Content-Security-Policy: frame-ancestors ".$cfg->getAllowIframes()."; script-src 'self' 'unsafe-inline'; object-src 'none'");
 
 if (($lang = Internationalization::getCurrentLanguage())) {
     $langs = array_unique(array($lang, $cfg->getPrimaryLanguage()));
@@ -36,19 +36,18 @@ if (osTicket::is_ie())
     <meta name="keywords" content="osTicket, Customer support system, support ticket system">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/osticket.css" media="screen">
-    <link rel="stylesheet" href="<?php echo ASSETS_PATH; ?>css/theme.css" media="screen">
     <link rel="stylesheet" href="<?php echo ASSETS_PATH; ?>css/print.css" media="print">
-    <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/typeahead.css"
-         media="screen" />
     <link type="text/css" href="<?php echo ROOT_PATH; ?>css/ui-lightness/jquery-ui-1.13.2.custom.min.css"
         rel="stylesheet" media="screen" />
     <link rel="stylesheet" href="<?php echo ROOT_PATH ?>css/jquery-ui-timepicker-addon.css" media="all">
-    <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/thread.css" media="screen">
-    <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/redactor.css" media="screen">
+    <!-- <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/thread.css" media="screen">
+    <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/redactor.css" media="screen"> -->
     <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/flags.css">
     <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/rtl.css"/>
     <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/select2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="<?php echo ROOT_PATH ?>images/oscar-favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="<?php echo ROOT_PATH ?>images/oscar-favicon-16x16.png" sizes="16x16" />
@@ -88,87 +87,121 @@ if (osTicket::is_ie())
     ?>
 </head>
 <body>
-    <div id="container">
+    <div>
         <?php
         if($ost->getError())
-            echo sprintf('<div class="error_bar">%s</div>', $ost->getError());
+            echo sprintf('<div class="alert alert-danger">%s</div>', $ost->getError());
         elseif($ost->getWarning())
-            echo sprintf('<div class="warning_bar">%s</div>', $ost->getWarning());
+            echo sprintf('<div class="alert alert-warning">%s</div>', $ost->getWarning());
         elseif($ost->getNotice())
-            echo sprintf('<div class="notice_bar">%s</div>', $ost->getNotice());
+            echo sprintf('<div class="alert alert-info">%s</div>', $ost->getNotice());
         ?>
-        <div id="header">
+
+        <nav class="navbar bg-dark border-bottom border-body navbar-expand-md" data-bs-theme="dark">
+            <div class="container-fluid">
+                <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+                <a class="navbar-brand" href="<?php echo ROOT_PATH; ?>index.php">
+                    <img style="width: 30px; height: 24px; object-fit: fill;" src="<?php echo ROOT_PATH; ?>logo.php" alt="<?php echo $ost->getConfig()->getTitle(); ?>"/>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav mb-lg-0 me-auto">
+                    <?php
+                        if($nav){ ?>
+                            <?php
+                            if($nav && ($navs=$nav->getNavLinks()) && is_array($navs)){
+                                foreach($navs as $name =>$nav) {
+                                    echo sprintf('<li class="nav-item"><a class="nav-link %s" href="%s">%s</a></li>',$nav['active']?'active':'',(ROOT_PATH.$nav['href']),$nav['desc']);
+                                }
+                            } ?>
+                        <?php
+                        }else{ ?>
+                        <hr>
+                    <?php } ?>
+                </ul>
+
+                <ul class="navbar-nav mb-lg-0 ms-auto">
+                    <?php
+                        if ($thisclient && is_object($thisclient) && $thisclient->isValid()
+                            && !$thisclient->isGuest()) {
+                    ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <?php echo Format::htmlchars($thisclient->getName()); ?>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?php echo ROOT_PATH; ?>profile.php"><?php echo __('Profile'); ?></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?php echo ROOT_PATH; ?>tickets.php"><?php echo sprintf(__('Tickets <b>(%d)</b>'), $thisclient->getNumTickets()); ?></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?php echo $signout_url; ?>"><?php echo __('Sign Out'); ?></a>
+                                </li>
+                            </ul>
+                        </li>
+                    <?php
+                    } elseif($nav) {
+                        if ($cfg->getClientRegistrationMode() == 'public') { ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><?php echo __('Guest User'); ?></a>
+                            </li>
+                        <?php
+                        }
+                        if ($thisclient && $thisclient->isValid() && $thisclient->isGuest()) { ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo $signout_url; ?>"><?php echo __('Sign Out'); ?></a>
+                            </li>
+                        <?php
+                        }
+                        elseif ($cfg->getClientRegistrationMode() != 'disabled') { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo $signin_url; ?>"><?php echo __('Sign In'); ?></a>
+                        </li>
+                        <?php
+                        }
+                    } ?>
+                </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div>
             <div class="pull-right flush-right">
             <p>
-             <?php
-                if ($thisclient && is_object($thisclient) && $thisclient->isValid()
-                    && !$thisclient->isGuest()) {
-                 echo Format::htmlchars($thisclient->getName()).'&nbsp;|';
-                 ?>
-                <a href="<?php echo ROOT_PATH; ?>profile.php"><?php echo __('Profile'); ?></a> |
-                <a href="<?php echo ROOT_PATH; ?>tickets.php"><?php echo sprintf(__('Tickets <b>(%d)</b>'), $thisclient->getNumTickets()); ?></a> -
-                <a href="<?php echo $signout_url; ?>"><?php echo __('Sign Out'); ?></a>
-            <?php
-            } elseif($nav) {
-                if ($cfg->getClientRegistrationMode() == 'public') { ?>
-                    <?php echo __('Guest User'); ?> | <?php
-                }
-                if ($thisclient && $thisclient->isValid() && $thisclient->isGuest()) { ?>
-                    <a href="<?php echo $signout_url; ?>"><?php echo __('Sign Out'); ?></a><?php
-                }
-                elseif ($cfg->getClientRegistrationMode() != 'disabled') { ?>
-                    <a href="<?php echo $signin_url; ?>"><?php echo __('Sign In'); ?></a>
-<?php
-                }
-            } ?>
+             
             </p>
             <p>
-<?php
-if (($all_langs = Internationalization::getConfiguredSystemLanguages())
-    && (count($all_langs) > 1)
-) {
-    $qs = array();
-    parse_str($_SERVER['QUERY_STRING'], $qs);
-    foreach ($all_langs as $code=>$info) {
-        list($lang, $locale) = explode('_', $code);
-        $qs['lang'] = $code;
-?>
-        <a class="flag flag-<?php echo strtolower($info['flag'] ?: $locale ?: $lang); ?>"
-            href="?<?php echo http_build_query($qs);
-            ?>" title="<?php echo Internationalization::getLanguageDescription($code); ?>">&nbsp;</a>
-<?php }
-} ?>
+                <?php
+                if (($all_langs = Internationalization::getConfiguredSystemLanguages())
+                    && (count($all_langs) > 1)
+                ) {
+                    $qs = array();
+                    parse_str($_SERVER['QUERY_STRING'], $qs);
+                    foreach ($all_langs as $code=>$info) {
+                        list($lang, $locale) = explode('_', $code);
+                        $qs['lang'] = $code;
+                ?>
+                        <a class="flag flag-<?php echo strtolower($info['flag'] ?: $locale ?: $lang); ?>"
+                            href="?<?php echo http_build_query($qs);
+                            ?>" title="<?php echo Internationalization::getLanguageDescription($code); ?>">&nbsp;</a>
+                <?php }
+                } ?>
             </p>
             </div>
-            <a class="pull-left" id="logo" href="<?php echo ROOT_PATH; ?>index.php"
-            title="<?php echo __('Support Center'); ?>">
-                <span class="valign-helper"></span>
-                <img src="<?php echo ROOT_PATH; ?>logo.php" border=0 alt="<?php
-                echo $ost->getConfig()->getTitle(); ?>">
-            </a>
         </div>
-        <div class="clear"></div>
-        <?php
-        if($nav){ ?>
-        <ul id="nav" class="flush-left">
-            <?php
-            if($nav && ($navs=$nav->getNavLinks()) && is_array($navs)){
-                foreach($navs as $name =>$nav) {
-                    echo sprintf('<li><a class="%s %s" href="%s">%s</a></li>%s',$nav['active']?'active':'',$name,(ROOT_PATH.$nav['href']),$nav['desc'],"\n");
-                }
-            } ?>
-        </ul>
-        <?php
-        }else{ ?>
-         <hr>
-        <?php
-        } ?>
-        <div id="content">
+
+        <div class="container mt-3">
 
          <?php if($errors['err']) { ?>
-            <div id="msg_error"><?php echo $errors['err']; ?></div>
+            <div class="alert alert-danger"><?php echo $errors['err']; ?></div>
          <?php }elseif($msg) { ?>
-            <div id="msg_notice"><?php echo $msg; ?></div>
+            <div class="alert alert-info"><?php echo $msg; ?></div>
          <?php }elseif($warn) { ?>
-            <div id="msg_warning"><?php echo $warn; ?></div>
+            <div class="alert alert-warning"><?php echo $warn; ?></div>
          <?php } ?>

@@ -21,61 +21,84 @@ $section = 'home';
 require(CLIENTINC_DIR.'header.inc.php');
 ?>
 <div id="landing_page">
-<?php include CLIENTINC_DIR.'templates/sidebar.tmpl.php'; ?>
 <div class="main-content">
-<?php
-if ($cfg && $cfg->isKnowledgebaseEnabled()) { ?>
-<div class="search-form">
-    <form method="get" action="kb/faq.php">
-    <input type="hidden" name="a" value="search"/>
-    <input type="text" name="q" class="search" placeholder="<?php echo __('Search our knowledge base'); ?>"/>
-    <button type="submit" class="green button"><?php echo __('Search'); ?></button>
-    </form>
-</div>
-<?php } ?>
-<div class="thread-body">
-<?php
-    if($cfg && ($page = $cfg->getLandingPage()))
-        echo $page->getBodyWithImages();
-    else
-        echo  '<h1>'.__('Welcome to the Support Center').'</h1>';
+    <div class="row">
+        <div class="col-md-9">
+            <?php
+                if($cfg && ($page = $cfg->getLandingPage()))
+                    echo $page->getBodyWithImages();
+                else
+                    echo  '<h1>'.__('Welcome to the Support Center').'</h1>';
+            ?>
+        </div>
+        <div class="col-md-3">
+            <div class="row">
+                <?php if ($cfg->getClientRegistrationMode() != 'disabled'|| !$cfg->isClientLoginRequired()) { ?>
+                    <div class="col-6 col-md-12">
+                        <a href="open.php" class="btn btn-outline-primary d-block mt-2 shadow-sm"><i class="bi bi-ticket-perforated"></i><br><?php echo __('Open a New Ticket');?></a>
+                    </div>
+                <?php } ?>
+                <div class="col-6 col-md-12">
+                    <a href="view.php" class="btn btn-outline-success d-block mt-2 shadow-sm"><i class="bi bi-search"></i><br><?php echo __('Check Ticket Status');?></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <div>
+    <?php
+    if($cfg && $cfg->isKnowledgebaseEnabled()){
+        //FIXME: provide ability to feature or select random FAQs ??
+    ?>
+    <br/><br/>
+    <?php
+    $cats = Category::getFeatured();
+    if ($cats->all()) { ?>
+    <div class="row">
+        <div class="col-12">
+            <h4 class="text-center"><?php echo __('Featured Knowledge Base Articles'); ?></h4>
+        </div>
+    </div>
+
+    <?php
+        if ($cfg && $cfg->isKnowledgebaseEnabled()) { ?>
+        <div class="row gy-4 gx-3">
+            <div class="ms-auto me-auto col-12 col-md-6 ">
+                <form method="get" action="kb/faq.php">
+                    <input type="hidden" name="a" value="search"/>
+                    <div class="input-group mb-3 mt-1">
+                        <input type="text" name="q" class="form-control shadow-sm" placeholder="<?php echo __('Search our knowledge base'); ?>" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary shadow-sm" type="submit"><i class="bi bi-binoculars"></i> <?php echo __('Search'); ?></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    <?php } ?>
+
+    <div class="row gy-4 gx-3 justify-content-center">
+    <?php
+    }
+    foreach ($cats as $C) { ?>
+        <?php foreach ($C->getTopArticles() as $F) { ?>
+            <div class="col-md-6 col-xl-3">
+                <div class="card shadow-sm h-100">
+                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $F->getQuestion(); ?></h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary"><?php echo $C->getName(); ?></h6>
+                        <p class="card-text"><?php echo $F->getTeaser(); ?></p>
+                        <a href="<?php echo ROOT_PATH; ?>kb/faq.php?id=<?php echo $F->getId(); ?>" class="btn btn-outline-primary">Zobacz więcej</a>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+    <?php
+        }
+    }
     ?>
     </div>
-</div>
-<div class="clear"></div>
-
-<div>
-<?php
-if($cfg && $cfg->isKnowledgebaseEnabled()){
-    //FIXME: provide ability to feature or select random FAQs ??
-?>
-<br/><br/>
-<?php
-$cats = Category::getFeatured();
-if ($cats->all()) { ?>
-<h1><?php echo __('Featured Knowledge Base Articles'); ?></h1>
-<?php
-}
-
-    foreach ($cats as $C) { ?>
-    <div class="featured-category front-page">
-        <i class="icon-folder-open icon-2x"></i>
-        <div class="category-name">
-            <?php echo $C->getName(); ?>
-        </div>
-<?php foreach ($C->getTopArticles() as $F) { ?>
-        <div class="article-headline">
-            <div class="article-title"><a href="<?php echo ROOT_PATH;
-                ?>kb/faq.php?id=<?php echo $F->getId(); ?>"><?php
-                echo $F->getQuestion(); ?></a></div>
-            <div class="article-teaser"><?php echo $F->getTeaser(); ?></div>
-        </div>
-<?php } ?>
-    </div>
-<?php
-    }
-}
-?>
 </div>
 </div>
 
