@@ -23,31 +23,26 @@ require(CLIENTINC_DIR.'header.inc.php');
 <div id="landing_page">
 <div class="main-content">
     <div class="row">
-        <div class="col-md-9">
-            <?php
-                if($cfg && ($page = $cfg->getLandingPage()))
-                    echo $page->getBodyWithImages();
-                else
-                    echo  '<h1>'.__('Welcome to the Support Center').'</h1>';
-            ?>
+        <div class="col-md-12">
             <?php if ($thisclient && is_object($thisclient) && $thisclient->isValid() && !$thisclient->isGuest()) { ?>
-                <?php echo User::lookup($thisclient->getId()) ?>
+                <?php require(CLIENTINC_DIR.'landing-user.inc.php'); ?>
+            <?php } else { ?>
+                <?php require(CLIENTINC_DIR.'landing-guest.inc.php'); ?>
             <?php } ?>
         </div>
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
             <div class="row">
                 <?php if ($cfg->getClientRegistrationMode() != 'disabled'|| !$cfg->isClientLoginRequired()) { ?>
                     <div class="col-6 col-md-12">
-                        <a href="open.php" class="btn btn-outline-primary d-block mt-2 shadow-sm"><i class="bi bi-ticket-perforated"></i><br><?php echo __('Open a New Ticket');?></a>
+                        <a href="open.php" class="btn btn-outline-primary d-block mt-2 shadow-sm"><i class="bi bi-ticket-perforated" style="font-size: 28px;"></i><br><?php echo __('Open a New Ticket');?></a>
                     </div>
                 <?php } ?>
                 <div class="col-6 col-md-12">
-                    <a href="view.php" class="btn btn-outline-success d-block mt-2 shadow-sm"><i class="bi bi-search"></i><br><?php echo __('Check Ticket Status');?></a>
+                    <a href="view.php" class="btn btn-outline-success d-block mt-2 shadow-sm"><i class="bi bi-binoculars" style="font-size: 28px;"></i><br><?php echo __('Check Ticket Status');?></a>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
-
     </div>
 
     <div>
@@ -55,13 +50,13 @@ require(CLIENTINC_DIR.'header.inc.php');
     if($cfg && $cfg->isKnowledgebaseEnabled()){
         //FIXME: provide ability to feature or select random FAQs ??
     ?>
-    <br/><br/>
     <?php
     $cats = Category::getFeatured();
     if ($cats->all()) { ?>
+    <hr class="mt-5">
     <div class="row">
         <div class="col-12">
-            <h4 class="text-center"><?php echo __('Featured Knowledge Base Articles'); ?></h4>
+            <h4 class="text-center"><i class="bi bi-journal-bookmark"></i> <?php echo __('Featured Knowledge Base Articles'); ?></h4>
         </div>
     </div>
 
@@ -73,7 +68,7 @@ require(CLIENTINC_DIR.'header.inc.php');
                     <input type="hidden" name="a" value="search"/>
                     <div class="input-group mb-3 mt-1">
                         <input type="text" name="q" class="form-control shadow-sm" placeholder="<?php echo __('Search our knowledge base'); ?>" aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary shadow-sm" type="submit"><i class="bi bi-binoculars"></i> <?php echo __('Search'); ?></button>
+                        <button class="btn btn-outline-secondary shadow-sm" type="submit"><i class="bi bi-search"></i> <?php echo __('Search'); ?></button>
                     </div>
                 </form>
             </div>

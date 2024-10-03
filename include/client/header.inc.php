@@ -86,7 +86,7 @@ if (osTicket::is_ie())
     }
     ?>
 </head>
-<body>
+<body class="bg-landing">
     <div>
         <?php
         if($ost->getError())
@@ -97,7 +97,7 @@ if (osTicket::is_ie())
             echo sprintf('<div class="alert alert-info">%s</div>', $ost->getNotice());
         ?>
 
-        <nav class="navbar bg-dark border-bottom border-body navbar-expand-md" data-bs-theme="dark">
+        <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg" data-bs-theme="dark">
             <div class="container-fluid">
                 <!-- <a class="navbar-brand" href="#">Navbar</a> -->
                 <a class="navbar-brand" href="<?php echo ROOT_PATH; ?>index.php">
@@ -115,7 +115,24 @@ if (osTicket::is_ie())
                             <?php
                             if($nav && ($navs=$nav->getNavLinks()) && is_array($navs)){
                                 foreach($navs as $name =>$nav) {
-                                    echo sprintf('<li class="nav-item"><a class="nav-link %s" href="%s">%s</a></li>',$nav['active']?'active':'',(ROOT_PATH.$nav['href']),$nav['desc']);
+                                    $iconhtml = "";
+                                    switch ($nav['href']) {
+                                        case "index.php":
+                                            $iconhtml = '<i class="bi bi-house"></i>';
+                                            break;
+                                        case "kb/index.php":
+                                            $iconhtml = '<i class="bi bi-journal-bookmark"></i>';
+                                            break;
+                                        case "open.php":
+                                            $iconhtml = '<i class="bi bi-ticket-perforated"></i>';
+                                            break;
+                                        case "tickets.php":
+                                            $iconhtml = '<i class="bi bi-card-checklist"></i>';
+                                            break;
+                                        default:
+                                            $iconhtml = "";
+                                    }
+                                    echo sprintf('<li class="nav-item"><a class="nav-link %s" href="%s">%s %s</a></li>',$nav['active']?'active':'',(ROOT_PATH.$nav['href']), $iconhtml, $nav['desc']);
                                 }
                             } ?>
                         <?php
@@ -130,7 +147,7 @@ if (osTicket::is_ie())
                             && !$thisclient->isGuest()) {
                     ?>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="dropdown-toggle btn btn-outline-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo Format::htmlchars($thisclient->getName()); ?>
                             </a>
                             <ul class="dropdown-menu">
@@ -161,7 +178,7 @@ if (osTicket::is_ie())
                         }
                         elseif ($cfg->getClientRegistrationMode() != 'disabled') { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo $signin_url; ?>"><?php echo __('Sign In'); ?></a>
+                            <a class="btn btn-primary" href="<?php echo $signin_url; ?>"><i class="bi bi-door-open"></i> <?php echo __('Sign In'); ?></a>
                         </li>
                         <?php
                         }
