@@ -30,6 +30,9 @@ require(CLIENTINC_DIR.'header.inc.php');
                 else
                     echo  '<h1>'.__('Welcome to the Support Center').'</h1>';
             ?>
+            <?php if ($thisclient && is_object($thisclient) && $thisclient->isValid() && !$thisclient->isGuest()) { ?>
+                <?php echo User::lookup($thisclient->getId()) ?>
+            <?php } ?>
         </div>
         <div class="col-md-3">
             <div class="row">
@@ -89,7 +92,7 @@ require(CLIENTINC_DIR.'header.inc.php');
                         <h5 class="card-title"><?php echo $F->getQuestion(); ?></h5>
                         <h6 class="card-subtitle mb-2 text-body-secondary"><?php echo $C->getName(); ?></h6>
                         <p class="card-text"><?php echo $F->getTeaser(); ?></p>
-                        <a href="<?php echo ROOT_PATH; ?>kb/faq.php?id=<?php echo $F->getId(); ?>" class="btn btn-outline-primary">Zobacz więcej</a>
+                        <a href="<?php echo ROOT_PATH; ?>kb/faq.php?id=<?php echo $F->getId(); ?>" class="btn btn-outline-primary shadow-sm">Zobacz więcej</a>
                     </div>
                 </div>
             </div>
