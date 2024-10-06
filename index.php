@@ -18,34 +18,17 @@ require('client.inc.php');
 require_once INCLUDE_DIR . 'class.page.php';
 
 $section = 'home';
-require(CLIENTINC_DIR.'header.inc.php');
-?>
-<div id="landing_page">
-<div class="main-content">
-    <div class="row">
-        <div class="col-md-12">
-            <?php if ($thisclient && is_object($thisclient) && $thisclient->isValid() && !$thisclient->isGuest()) { ?>
-                <?php require(CLIENTINC_DIR.'landing-user.inc.php'); ?>
-            <?php } else { ?>
-                <?php require(CLIENTINC_DIR.'landing-guest.inc.php'); ?>
-            <?php } ?>
-        </div>
-        <!-- <div class="col-md-3">
-            <div class="row">
-                <?php if ($cfg->getClientRegistrationMode() != 'disabled'|| !$cfg->isClientLoginRequired()) { ?>
-                    <div class="col-6 col-md-12">
-                        <a href="open.php" class="btn btn-outline-primary d-block mt-2 shadow-sm"><i class="bi bi-ticket-perforated" style="font-size: 28px;"></i><br><?php echo __('Open a New Ticket');?></a>
-                    </div>
-                <?php } ?>
-                <div class="col-6 col-md-12">
-                    <a href="view.php" class="btn btn-outline-success d-block mt-2 shadow-sm"><i class="bi bi-binoculars" style="font-size: 28px;"></i><br><?php echo __('Check Ticket Status');?></a>
-                </div>
-            </div>
-        </div> -->
-    </div>
-    </div>
 
-    <div>
+// Landing page type choice
+if ($thisclient && is_object($thisclient) && $thisclient->isValid() && !$thisclient->isGuest()) {
+    $landingBody = false;
+    $clientLoggedIn = true;
+    require(CLIENTINC_DIR.'header.inc.php');
+    require(CLIENTINC_DIR.'landing-user.inc.php');
+?>
+
+<!-- Knowledge base preview -->
+<div class="container">
     <?php
     if($cfg && $cfg->isKnowledgebaseEnabled()){
         //FIXME: provide ability to feature or select random FAQs ??
@@ -86,8 +69,8 @@ require(CLIENTINC_DIR.'header.inc.php');
                     <div class="card-body">
                         <h5 class="card-title"><?php echo $F->getQuestion(); ?></h5>
                         <h6 class="card-subtitle mb-2 text-body-secondary"><?php echo $C->getName(); ?></h6>
-                        <p class="card-text"><?php echo $F->getTeaser(); ?></p>
-                        <a href="<?php echo ROOT_PATH; ?>kb/faq.php?id=<?php echo $F->getId(); ?>" class="btn btn-outline-primary shadow-sm">Zobacz więcej</a>
+                        <p class="card-text mb-0"><?php echo $F->getTeaser(); ?></p>
+                        <a href="<?php echo ROOT_PATH; ?>kb/faq.php?id=<?php echo $F->getId(); ?>" class="text-dark">Zobacz więcej</a>
                     </div>
                 </div>
             </div>
@@ -98,6 +81,16 @@ require(CLIENTINC_DIR.'header.inc.php');
     ?>
     </div>
 </div>
-</div>
 
-<?php require(CLIENTINC_DIR.'footer.inc.php'); ?>
+    <?php require(CLIENTINC_DIR.'footer.inc.php'); ?>
+
+<?php
+} else {
+    $landingBody = true;
+    $clientLoggedIn = false;
+    require(CLIENTINC_DIR.'header.inc.php');
+    require(CLIENTINC_DIR.'landing-guest.inc.php');
+}
+?>
+
+    

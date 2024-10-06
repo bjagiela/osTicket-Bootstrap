@@ -15,7 +15,7 @@ if (($lang = Internationalization::getCurrentLanguage())) {
 }
 ?>
 <!DOCTYPE html>
-<html<?php
+<html style="height: 100%;" <?php
 if ($lang
         && ($info = Internationalization::getLanguageInfo($lang))
         && (@$info['direction'] == 'rtl'))
@@ -86,8 +86,15 @@ if (osTicket::is_ie())
     }
     ?>
 </head>
-<body class="bg-landing">
-    <div>
+
+<?php 
+    if ($landingBody && !$clientLoggedIn) {
+        echo '<body class="bg-landing">';
+    }
+    else {
+        echo '<body>';
+    }
+?>
         <?php
         if($ost->getError())
             echo sprintf('<div class="alert alert-danger">%s</div>', $ost->getError());
@@ -126,7 +133,7 @@ if (osTicket::is_ie())
                                         case "open.php":
                                             $iconhtml = '<i class="bi bi-ticket-perforated"></i>';
                                             break;
-                                        case "tickets.php":
+                                        case "tickets.php" || "view.php":
                                             $iconhtml = '<i class="bi bi-card-checklist"></i>';
                                             break;
                                         default:
@@ -213,12 +220,12 @@ if (osTicket::is_ie())
             </div>
         </div>
 
-        <div class="container mt-3">
-
-         <?php if($errors['err']) { ?>
-            <div class="alert alert-danger"><?php echo $errors['err']; ?></div>
-         <?php }elseif($msg) { ?>
-            <div class="alert alert-info"><?php echo $msg; ?></div>
-         <?php }elseif($warn) { ?>
-            <div class="alert alert-warning"><?php echo $warn; ?></div>
-         <?php } ?>
+        <div class="container">
+            <?php if($errors['err']) { ?>
+                <div class="alert alert-danger"><?php echo $errors['err']; ?></div>
+            <?php }elseif($msg) { ?>
+                <div class="alert alert-info"><?php echo $msg; ?></div>
+            <?php }elseif($warn) { ?>
+                <div class="alert alert-warning"><?php echo $warn; ?></div>
+            <?php } ?>
+        </div>
