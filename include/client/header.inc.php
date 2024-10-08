@@ -92,7 +92,7 @@ if (osTicket::is_ie())
         echo '<body class="bg-landing">';
     }
     else {
-        echo '<body>';
+        echo '<body class="d-flex flex-column min-vh-100 bg-body-secondary">';
     }
 ?>
         <?php
@@ -222,10 +222,10 @@ if (osTicket::is_ie())
 
         <div class="container">
             <?php if($errors['err']) { ?>
-                <div class="alert alert-danger"><?php echo $errors['err']; ?></div>
+                <div class="alert alert-danger mt-3"><?php echo $errors['err']; ?></div>
             <?php }elseif($msg) { ?>
-                <div class="alert alert-info"><?php echo $msg; ?></div>
+                <div class="alert alert-info mt-3"><?php echo $msg; ?></div>
             <?php }elseif($warn) { ?>
-                <div class="alert alert-warning"><?php echo $warn; ?></div>
+                <div class="alert alert-warning mt-3"><?php echo $warn; ?></div>
             <?php } ?>
         </div>

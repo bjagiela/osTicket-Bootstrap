@@ -1,7 +1,7 @@
         </div>
     </div>
-    <div class="container">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="container mt-auto">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-2 border-top">
             <div class="col-md-6 d-flex align-items-center">
                 <span class="mb-3 mb-md-0 text-body-secondary"><?php echo __('Copyright &copy;'); ?> <?php echo date('Y'); ?> <?php echo Format::htmlchars((string) $ost->company ?: 'osTicket.com'); ?> - <?php echo __('All rights reserved.'); ?></span>
             </div>
