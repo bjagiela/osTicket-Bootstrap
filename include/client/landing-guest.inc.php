@@ -49,3 +49,28 @@
         </div>
     </div>
 </div>
+
+<div id="overlay"></div>
+<div id="loading">
+    <h4><?php echo __('Please Wait!');?></h4>
+    <p><?php echo __('Please wait... it will take a second!');?></p>
+</div>
+<?php
+if (($lang = Internationalization::getCurrentLanguage()) && $lang != 'en_US') { ?>
+    <script type="text/javascript" src="<?php echo ROOT_PATH; ?>ajax.php/i18n/<?php
+        echo $lang; ?>/js"></script>
+<?php } ?>
+<script type="text/javascript">
+    getConfig().resolve(<?php
+        include INCLUDE_DIR . 'ajax.config.php';
+        $api = new ConfigAjaxAPI();
+        print $api->client(false);
+    ?>);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+</script>
+</body>
+</html>

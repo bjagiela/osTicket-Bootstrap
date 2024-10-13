@@ -43,7 +43,7 @@ if (count($entries)) {
             $events->next();
             $event = $events->current();
         }
-        ?><div id="thread-entry-<?php echo $entry->getId(); ?>"><?php
+        ?><div class="card shadow-sm my-2" id="thread-entry-<?php echo $entry->getId(); ?>"><?php
         include 'thread-entry.tmpl.php';
         ?></div><?php
     }
