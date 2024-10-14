@@ -171,7 +171,7 @@ $tickets->values(
             <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
                 <input type="hidden" name="a"  value="search">
                 <?php echo __('Search in tickets:');?>
-                <div class="input-group">
+                <div class="input-group input-group-sm">
                     <input type="text" class="form-control shadow-sm" name="keywords" value="<?php echo Format::htmlchars($settings['keywords']); ?>">
                     <a href="?clear" class="btn btn-secondary shadow-sm <?php if ($settings['keywords'] || $settings['topic_id'] || $_REQUEST['sort']) { echo " "; } else { echo "disabled"; } ?>"><i class="bi bi-x-lg"></i></a>
                     <button type="submit" class="btn btn-secondary shadow-sm"><i class="bi bi-search"></i> <?php echo __('Search');?></button>
@@ -179,7 +179,7 @@ $tickets->values(
             </div>
             <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mt-2 mt-sm-0">
                 <?php echo __('Help Topic'); ?>:
-                <select name="topic_id" class="form-select shadow-sm" onchange="javascript: this.form.submit(); ">
+                <select name="topic_id" class="form-select form-select-sm shadow-sm" onchange="javascript: this.form.submit(); ">
                     <option value="">&mdash; <?php echo __('All Help Topics');?> &mdash;</option>
                     <?php
                     foreach (Topic::getHelpTopics(true) as $id=>$name) {
@@ -199,7 +199,7 @@ $tickets->values(
 
     <!-- <hr> -->
 
-    <div class="card mt-4 shadow py-1">
+    <div class="card mt-4 shadow py-1 d-none d-md-block">
         <div class="table-responsive">
             <table id="ticketTable" class="table table-striped table-sm mb-0" border="0" cellspacing="0" cellpadding="0" style="word-break: normal;">
                 <thead>
@@ -272,6 +272,65 @@ $tickets->values(
             </table>
         </div>
     </div>
+
+    <div class="d-block d-md-none mt-3">
+    <?php
+        $subject_field = TicketForm::objects()->one()->getField('subject');
+        $defaultDept=Dept::getDefaultDeptName(); //Default public dept.
+        if ($tickets->exists(true)) {
+            foreach ($tickets as $T) {
+                $dept = $T['dept__ispublic']
+                    ? Dept::getLocalById($T['dept_id'], 'name', $T['dept__name'])
+                    : $defaultDept;
+                $subject = $subject_field->display(
+                    $subject_field->to_php($T['cdata__subject']) ?: $T['cdata__subject']
+                );
+                $status = TicketStatus::getLocalById($T['status_id'], 'value', $T['status__name']);
+                if (false) // XXX: Reimplement attachment count support
+                    $subject.='  &nbsp;&nbsp;<span class="Icon file"></span>';
+
+                $ticketNumber=$T['number'];
+                if($T['isanswered'] && !strcasecmp($T['status__state'], 'open')) {
+                    $subject="<b>$subject</b>";
+                    $ticketNumber="<b>$ticketNumber</b>";
+                }
+                $thisclient->getId() != $T['user_id'] ? $isCollab = true : $isCollab = false;
+                ?>
+                <div id="<?php echo $T['ticket_id']; ?>" class="card shadow-sm mt-3">
+                    <div class="card-body">
+                    <div class="mb-2">
+                                <a 
+                                    class="Icon <?php echo strtolower($T['source']); ?>Ticket badge text-bg-dark text-decoration-none shadow-sm stretched-link" 
+                                    title="<?php echo $T['user__default_email__address']; ?>"
+                                    href="tickets.php?id=<?php echo $T['ticket_id']; ?>">
+                                    #<?php echo $ticketNumber; ?>
+                                </a>
+                                <div class="badge text-bg-secondary shadow-sm ms-1"><?php echo $status; ?></div>
+                            </div>
+                        <h5 class="card-title">
+                            <?php if ($isCollab) {?>
+                                <div href="tickets.php?id=<?php echo $T['ticket_id']; ?>"><i class="bi bi-people"></i> <?php echo $subject; ?></div>
+                            <?php } else {?>
+                                <div href="tickets.php?id=<?php echo $T['ticket_id']; ?>"><?php echo $subject; ?></div>
+                            <?php } ?>
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">
+                            <?php echo Format::date($T['created']); ?>
+                        </h6>
+                        <p class="card-text">
+                            <span class="truncate"><?php echo __('Department'); ?>: <?php echo $dept; ?></span>
+                        </p>
+                    </div>
+                </div>
+            <?php
+            }
+
+        } else {
+            echo '<tr><td colspan="5">'.__('Your query did not match any records').'</td></tr>';
+        }
+        ?>
+    </div>
+
     <?php
     if ($total) {
         echo '<div class="mt-3">&nbsp;'.__('Page').':'.$pageNav->getPageLinks().'&nbsp;</div>';
