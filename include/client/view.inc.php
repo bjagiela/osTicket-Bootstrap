@@ -16,7 +16,7 @@ if(!$dept || !$dept->isPublic())
     $dept = $cfg->getDefaultDept(); ?>
 
 <div class="container-xxl">
-    <div class="card p-3 bg-body-tertiary shadow">
+    <div class="py-4 px-4 bg-body-tertiary glasscard">
         <?php
         if ($thisclient && $thisclient->isGuest()
             && $cfg->isClientRegistrationEnabled()) { ?>
@@ -33,7 +33,7 @@ if(!$dept || !$dept->isPublic())
 
         <?php } ?>
 
-        <div class="row align-items-center">
+        <div class="row align-items-center mb-3">
             <div class="col-12 col-md-7">
                 <div class="text-md-start text-center">
                     <h3 class="d-block d-md-inline mb-2 mb-md-0">
@@ -61,7 +61,7 @@ if(!$dept || !$dept->isPublic())
                 <?php } ?>
             </div>
         </div>
-        <hr>
+        <!-- <hr> -->
 
         <div class="row gy-3">
             <div class="col-12 col-lg-6">

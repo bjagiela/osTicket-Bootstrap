@@ -15,8 +15,8 @@ if ($cfg->isAvatarsEnabled() && $user)
 $type = $entryTypes[$entry->type];
 ?>
     <div class="card-header <?php if ($type == "response") {echo "bg-warning-subtle bg-gradient";} else if ($type == "note") {echo "bg-info-subtle";}  ?>">
-        <div class="d-flex align-items-center my-1">
-            <img src="//www.gravatar.com/avatar/b1891d1dea3aeb76b4896e451623ac39?s=80&d=mm" alt="" width="50" class="rounded-circle shadow-sm" />
+        <div class="d-flex align-items-center">
+            <img src="//www.gravatar.com/avatar/b1891d1dea3aeb76b4896e451623ac39?s=80&d=mm" alt="" width="40" class="rounded-circle shadow-sm" />
             <div class="flex-fill ps-2">
                 <div class="fw-bold">
                     <?php if ($entry->flags & ThreadEntry::FLAG_EDITED) { ?>
