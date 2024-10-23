@@ -35,7 +35,6 @@ if (osTicket::is_ie())
     <meta name="description" content="customer support platform">
     <meta name="keywords" content="osTicket, Customer support system, support ticket system">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/osticket.css" media="screen">
     <link rel="stylesheet" href="<?php echo ASSETS_PATH; ?>css/print.css" media="print">
     <link type="text/css" href="<?php echo ROOT_PATH; ?>css/ui-lightness/jquery-ui-1.13.2.custom.min.css"
         rel="stylesheet" media="screen" />
@@ -48,6 +47,7 @@ if (osTicket::is_ie())
     <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/select2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/osticket.css" media="screen">
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="<?php echo ROOT_PATH ?>images/oscar-favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="<?php echo ROOT_PATH ?>images/oscar-favicon-16x16.png" sizes="16x16" />
@@ -92,7 +92,7 @@ if (osTicket::is_ie())
         echo '<body class="bg-landing">';
     }
     else {
-        echo '<body class="d-flex flex-column min-vh-100 bg-body-secondary">';
+        echo '<body class="d-flex flex-column bg-dark-subtle min-vh-100">';
     }
 ?>
         <?php
@@ -104,7 +104,7 @@ if (osTicket::is_ie())
             echo sprintf('<div class="alert alert-info">%s</div>', $ost->getNotice());
         ?>
 
-        <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg" data-bs-theme="dark">
+        <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #00689e;" data-bs-theme="dark">
             <div class="container-fluid">
                 <!-- <a class="navbar-brand" href="#">Navbar</a> -->
                 <a class="navbar-brand" href="<?php echo ROOT_PATH; ?>index.php">
@@ -154,7 +154,7 @@ if (osTicket::is_ie())
                             && !$thisclient->isGuest()) {
                     ?>
                         <li class="nav-item dropdown">
-                            <a class="dropdown-toggle btn btn-outline-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="dropdown-toggle btn btn-light shadow-sm" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo Format::htmlchars($thisclient->getName()); ?>
                             </a>
                             <ul class="dropdown-menu">
@@ -185,7 +185,7 @@ if (osTicket::is_ie())
                         }
                         elseif ($cfg->getClientRegistrationMode() != 'disabled') { ?>
                         <li class="nav-item">
-                            <a class="btn btn-primary" href="<?php echo $signin_url; ?>"><i class="bi bi-door-open"></i> <?php echo __('Sign In'); ?></a>
+                            <a class="btn btn-light" href="<?php echo $signin_url; ?>"><i class="bi bi-door-open"></i> <?php echo __('Log In'); ?></a>
                         </li>
                         <?php
                         }

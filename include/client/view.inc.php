@@ -16,7 +16,7 @@ if(!$dept || !$dept->isPublic())
     $dept = $cfg->getDefaultDept(); ?>
 
 <div class="container-xxl">
-    <div class="py-4 px-4 bg-body-tertiary glasscard">
+    <div class="py-4 px-4 glasscard bg-body-tertiary">
         <?php
         if ($thisclient && $thisclient->isGuest()
             && $cfg->isClientRegistrationEnabled()) { ?>
@@ -70,7 +70,7 @@ if(!$dept || !$dept->isPublic())
                         <?php echo __('Basic Ticket Information'); ?>
                     </div>
                     <div class="card-body py-2">
-                        <table class="table table-borderless table-sm mb-0">
+                        <table class="table table-borderless w-auto table-sm mb-0">
                             <tr>
                                 <th><?php echo __('Ticket Status');?>:</th>
                                 <td><?php echo ($S = $ticket->getStatus()) ? $S->getLocalName() : ''; ?></td>
@@ -93,13 +93,13 @@ if(!$dept || !$dept->isPublic())
                         <?php echo __('User Information'); ?>
                     </div>
                     <div class="card-body py-2">
-                        <table class="table table-borderless table-sm mb-0">
+                        <table class="table table-borderless w-auto table-sm mb-0">
                             <tr>
-                                <th width="100"><?php echo __('Name');?>:</th>
+                                <th><?php echo __('Name');?>:</th>
                                 <td><?php echo mb_convert_case(Format::htmlchars($ticket->getName()), MB_CASE_TITLE); ?></td>
                             </tr>
                             <tr>
-                                <th width="100"><?php echo __('Email');?>:</th>
+                                <th><?php echo __('Email');?>:</th>
                                 <td><?php echo Format::htmlchars($ticket->getEmail()); ?></td>
                             </tr>
                             <tr>

@@ -20,7 +20,7 @@
     <div class="container mt-5 pb-5">
         <div class="row g-4">
             <div class="col">
-                <div class="px-4 py-3 h-100 glasscard">
+                <div class="px-4 py-3 h-100 glasscard bg-body-tertiary">
                     <div class="text-center">
                         <img style="height: 250px;" src="<?php echo ROOT_PATH ?>images/timeline-50.svg" alt="">
                     </div>  
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="px-4 py-3 h-100 glasscard">
+                <div class="px-4 py-3 h-100 glasscard bg-body-tertiary">
                     <div class="text-center">
                         <img style="height: 250px;" src="<?php echo ROOT_PATH ?>images/problem-solving-5-2.svg" alt="">
                     </div>
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class=" col">
-                <div class="px-4 py-3 h-100 glasscard">
+                <div class="px-4 py-3 h-100 glasscard bg-body-tertiary">
                     <div class="text-center">
                         <img style="height: 250px;" src="<?php echo ROOT_PATH ?>images/cybersecurity-1-1.svg" alt="">
                     </div>

@@ -4475,7 +4475,7 @@ class TextboxWidget extends Widget {
             id="<?php echo $this->id; ?>"
             <?php echo $autofocus .' '.Format::array_implode('=', ' ',
                     array_filter($attrs)); ?>
-            name="<?php echo $this->name; ?>"
+            name="<?php echo $this->name; ?>" class="form-control"
             value="<?php echo Format::htmlchars($this->value, true); ?>"/>
         <?php
     }

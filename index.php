@@ -29,7 +29,7 @@ if ($thisclient && is_object($thisclient) && $thisclient->isValid() && !$thiscli
 
 <!-- Knowledge base preview -->
 <div class="container">
-    <div class="mx-1 mt-5">
+    <div class="mt-5 glasscard bg-body-tertiary px-4 pt-3 pb-4">
         <?php
         if($cfg && $cfg->isKnowledgebaseEnabled()){
             //FIXME: provide ability to feature or select random FAQs ??
@@ -52,7 +52,7 @@ if ($thisclient && is_object($thisclient) && $thisclient->isValid() && !$thiscli
                         <input type="hidden" name="a" value="search"/>
                         <div class="input-group mb-3 mt-1">
                             <input type="text" name="q" class="form-control shadow-sm" placeholder="<?php echo __('Search our knowledge base'); ?>" aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <button class="btn btn-outline-secondary shadow-sm" type="submit"><i class="bi bi-search"></i> <?php echo __('Search'); ?></button>
+                            <button class="btn btn-dark shadow-sm" type="submit"><i class="bi bi-search"></i> <?php echo __('Search'); ?></button>
                         </div>
                     </form>
                 </div>
@@ -65,13 +65,15 @@ if ($thisclient && is_object($thisclient) && $thisclient->isValid() && !$thiscli
         foreach ($cats as $C) { ?>
             <?php foreach ($C->getTopArticles() as $F) { ?>
                 <div class="col-md-6 col-xl-3">
-                    <div class="glasscard h-100 hover-effect bg-white p-3">
+                    <div class="card h-100 bg-white rounded-4 shadow-sm">
                         <!-- <img src="..." class="card-img-top" alt="..."> -->
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $F->getQuestion(); ?></h5>
                             <h6 class="card-subtitle mb-2 text-body-secondary"><?php echo $C->getName(); ?></h6>
                             <p class="card-text mb-0"><?php echo $F->getTeaser(); ?></p>
-                            <a href="<?php echo ROOT_PATH; ?>kb/faq.php?id=<?php echo $F->getId(); ?>" class="stretched-link"></a>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a class="btn btn-sm btn-outline-dark my-1" href="<?php echo ROOT_PATH; ?>kb/faq.php?id=<?php echo $F->getId(); ?>"><?php echo __('Open Article'); ?></a>
                         </div>
                     </div>
                 </div>

@@ -15,37 +15,35 @@ if ($cfg->isAvatarsEnabled() && $user)
 $type = $entryTypes[$entry->type];
 ?>
     <div class="card-header <?php if ($type == "response") {echo "bg-warning-subtle bg-gradient";} else if ($type == "note") {echo "bg-info-subtle";}  ?>">
-        <div class="d-flex align-items-center">
-            <img src="//www.gravatar.com/avatar/b1891d1dea3aeb76b4896e451623ac39?s=80&d=mm" alt="" width="40" class="rounded-circle shadow-sm" />
-            <div class="flex-fill ps-2">
-                <div class="fw-bold">
-                    <?php if ($entry->flags & ThreadEntry::FLAG_EDITED) { ?>
-                        <a 
-                            tabindex="0" 
-                            class="badge text-bg-dark" 
-                            role="button" 
-                            data-bs-toggle="popover" 
-                            data-bs-trigger="focus"
-                            data-bs-html="true"
-                            data-bs-title="<i class='bi bi-pen'></i> <?php echo __("Entry was edited") ?>" 
-                            data-bs-content="
-                                <?php echo __('Date: ') ?>
-                                <?php echo Format::datetime($entry->updated) ?>
-                                <br/>
-                                <?php echo __('Editor: ') ?>
-                                <?php echo __('You') ?>">
-                            <i class="bi bi-pen"></i>
-                        </a>
-                    <?php } ?>
-                    <?php echo $name; ?>
-                </div>
-                <div class="small text-secondary">
-                    <?php echo sprintf('<time datetime="%s" title="%s">%s</time>',
-                        date(DateTime::W3C, Misc::db2gmtime($entry->created)),
-                        Format::daydatetime($entry->created),
-                        Format::datetime($entry->created)
-                    ); ?>
-                </div>
+        <div class="row align-items-center">
+            <!-- <img src="//www.gravatar.com/avatar/b1891d1dea3aeb76b4896e451623ac39?s=80&d=mm" alt="" width="40" class="rounded-circle shadow-sm" /> -->
+            <div class="fw-bold col-auto me-auto">
+                <?php if ($entry->flags & ThreadEntry::FLAG_EDITED) { ?>
+                    <a 
+                        tabindex="0" 
+                        class="badge text-bg-dark" 
+                        role="button" 
+                        data-bs-toggle="popover" 
+                        data-bs-trigger="focus"
+                        data-bs-html="true"
+                        data-bs-title="<i class='bi bi-pen'></i> <?php echo __("Entry was edited") ?>" 
+                        data-bs-content="
+                            <?php echo __('Date: ') ?>
+                            <?php echo Format::datetime($entry->updated) ?>
+                            <br/>
+                            <?php echo __('Editor: ') ?>
+                            <?php echo __('You') ?>">
+                        <i class="bi bi-pen"></i>
+                    </a>
+                <?php } ?>
+                <?php echo $name; ?>
+            </div>
+            <div class="small text-secondary col-auto">
+                <?php echo sprintf('<time datetime="%s" title="%s">%s</time>',
+                    date(DateTime::W3C, Misc::db2gmtime($entry->created)),
+                    Format::daydatetime($entry->created),
+                    Format::datetime($entry->created)
+                ); ?>
             </div>
         </div>
     </div>

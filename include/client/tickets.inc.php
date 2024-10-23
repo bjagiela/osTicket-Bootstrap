@@ -138,7 +138,7 @@ $tickets->values(
 
 ?>
 <div class="container-xxl">
-    <div class="p-3 bg-body-tertiary glasscard">
+    <div class="p-3 glasscard bg-body-tertiary">
         <div class="row align-items-center">
             <div class="col-12 col-md-6">
                 <h3 class="my-0 text-md-start text-center">
